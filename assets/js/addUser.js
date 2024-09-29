@@ -1,17 +1,39 @@
-class User {
-  constructor() {
-    this._users = null;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const userName = document.getElementById("name");
+  const userAvatar = document.getElementById("avatar");
+  const userUsername = document.getElementById("username");
+  const userPassword = document.getElementById("password");
 
-  getUsers() {
-    if (this._users === null) {
-      try {
-        const storedUsers = localStorage.getItem("users");
-        this._users = storedUsers ? JSON.parse(storedUsers) : [];
-      } catch (error) {
-        return (this._users = []);
-      }
+  const instantFeedback = document.getElementById("instantFeedback");
+
+  const userManager = new User();
+
+  // Membuat format tanggal yang disimpan seperti yyyy-mm-dd
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  formManager.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const userData = {
+      name: userName.value,
+      username: userAvatar.value,
+      avatar: userUsername.value,
+      password: userPassword.value,
+      createdAt: `${year}-${month}-${day}`,
+    };
+
+    const result = userManager.saveUser(userData);
+
+    if (result.success) {
+      instantFeedback.style.display = "none";
+      // Arahkan pengguna ke halaman login
+      return (window.location.href = "../login.html");
+    } else {
+      instantFeedback.style.display = "flex";
+      instantFeedback.textContent = result.error;
     }
-    return this._users;
-  }
-}
+  });
+});
