@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const instantFeedback = document.getElementById("instantFeedback");
 
+  instantFeedback.style.display = "none";
+
   const userManager = new User();
 
   formManager.addEventListener("submit", (event) => {
