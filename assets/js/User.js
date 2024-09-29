@@ -67,5 +67,34 @@ class User {
     }
   }
 
-  userSignIn(userData) {}
+  userSignIn(userData) {
+    const { username, password } = userData;  
+
+    if (typeof username !== "string" || username.trim() === "") {
+      return {
+        success: false,
+        error: "username is missing",
+      };
+    }
+
+    if (typeof password !== "string" || password.trim() === "") {
+      return {
+        success: false,
+        error: "password is missing",
+      };
+    }
+
+    const userExists = this.getUsers().some((user) => user.username.toLowerCase() === username.toLowerCase() && user.password === password);
+
+    if (userExists) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Username atau password salah!",
+      };
+    }
+  }
 }

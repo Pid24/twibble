@@ -13,14 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const userData = {
       username: userUsername.value,
       password: userPassword.value,
-      createdAt: `${year}-${month}-${day}`,
     };
 
     const result = userManager.userSignIn(userData);
 
     if (result.success) {
       instantFeedback.style.display = "none";
-      localStorage.setItem("usernameLoggedIn", userUsername);
+      localStorage.setItem("usernameLoggedIn", userUsername.value);
       // Arahkan pengguna ke halaman login
       return (window.location.href = "../index.html");
     } else {
