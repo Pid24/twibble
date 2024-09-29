@@ -47,5 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const result = twittManager.saveTwitt(twittData);
+
+    if (result.success) {
+      instantFeedback.style.display = "none";
+      twittContent.value = "";
+      selectedFeeling = null;
+
+      feelingItems.forEach((item) => {
+        item.classList.remove("border-[#1880e8]");
+      });
+    } else {
+      instantFeedback.style.display = "flex";
+      instantFeedback.textContent = result.error;
+    }
   });
 });
