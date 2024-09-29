@@ -54,7 +54,18 @@ class User {
 
     const users = this.getUsers();
     users.push(newUser);
+
+    try {
+      localStorage.setItem("users", JSON.stringify(users));
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+      };
+    }
   }
 
-  userSignIn() {}
+  userSignIn(userData) {}
 }
