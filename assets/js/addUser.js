@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const userData = {
       name: userName.value,
-      username: userAvatar.value,
-      avatar: userUsername.value,
+      username: userUsername.value,
+      avatar: userAvatar.value,
       password: userPassword.value,
       createdAt: `${year}-${month}-${day}`,
     };
