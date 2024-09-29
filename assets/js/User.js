@@ -45,6 +45,15 @@ class User {
         error: "password is missing",
       };
     }
+
+    const newUser = {
+      id: Date.now(),
+      isActive: true,
+      ...userData,
+    };
+
+    const users = this.getUsers();
+    users.push(newUser);
   }
 
   userSignIn() {}
