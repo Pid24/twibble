@@ -131,6 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
           };
 
           const result = twittManager.loveTwitt(loveTwittData);
+
+          if (result.success) {
+            // Jika berhasil, sembunyikan feedback
+          } else {
+            instantFeedback.style.display = "flex";
+            instantFeedback.textContent = result.error;
+          }
         });
       });
     }
