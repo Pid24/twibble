@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const existingTwitts = twittManager.getTwitts();
+  const existingLoveTwitts = twittManager.getLoveTwitts();
 
   function displayAllTwitts(twitts = existingTwitts) {
     if (twitts.length === 0) {
@@ -77,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       twitts.forEach((twitt) => {
         const ownerTwitt = twittUsers.find((user) => user.username.toLowerCase() === twitt.twittUsernameOwner.toLowerCase());
+
+        const getAllLoveTwitts = existingLoveTwitts.filter((loveTwitt) => loveTwitt.twittId === twitt.id);
+        const countLoveTwitts = getAllLoveTwitts.length;
 
         const itemTwitt = document.createElement("div");
         itemTwitt.className = "p-4 border bg-primary-b-2 border-line";
@@ -105,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="flex justify-center items-center gap-2.5 pr-[250px]">
                 <a id="loveTwitt-${twitt.id}" href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
                   <img class="like-icon" src="assets/heart.svg" alt="heart" />
-                  <p class="text-sm font-normal text-like">0 Likes</p>
+                  <p id="totalLikeThatTwitt" class="text-sm font-normal text-like">${countLoveTwitts} Likes</p>
                 </a>
                 <a href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
                   <img src="assets/trash.svg" alt="heart" />
@@ -121,6 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         twittsWrapper.appendChild(itemTwitt);
 
+        const totalLikeThatTwitt = itemTwitt.querySelector("#totalLikeThatTwitt");
+
         // bikin event listener untuk fitur like
         itemTwitt.querySelector(`#loveTwitt-${twitt.id}`).addEventListener("click", function (event) {
           event.preventDefault();
@@ -133,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const result = twittManager.loveTwitt(loveTwittData);
 
           if (result.success) {
-            // Jika berhasil, sembunyikan feedback
+            totalLikeThatTwitt.textContent = 1 + "Likes";
           } else {
             instantFeedback.style.display = "flex";
             instantFeedback.textContent = result.error;
