@@ -113,14 +113,21 @@ document.addEventListener("DOMContentLoaded", () => {
                   <img class="like-icon" src="assets/${hasLiked ? `heart-fill.svg` : `heart.svg`}" alt="heart" />
                   <p id="totalLikeThatTwitt" class="text-sm font-normal text-like">${countLoveTwitts} Likes</p>
                 </a>
-                <a href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
-                  <img src="assets/trash.svg" alt="heart" />
-                  <p class="text-sm font-normal text-username">Delete</p>
-                </a>
-                <a href="#" class="flex justify-start items-center w-[93px] gap-1.5">
-                  <img src="assets/warning-2.svg" />
-                  <p class="text-sm font-normal text-username">Report</p>
-                </a>
+                ${
+                  twitt.twittUsernameOwner === usernameLoggedIn
+                    ? `
+                  <a id="deleteTwitt-${twitt.id}" href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
+                    <img src="assets/trash.svg" alt="heart">
+                    <p class="text-sm font-normal text-username">Delete</p>
+                  </a>
+                  `
+                    : `
+                  <a href="#" class="flex justify-start items-center w-[93px] gap-1.5">
+                    <img src="assets/warning-2.svg">
+                    <p class="text-sm font-normal text-username">Report</p>
+                  </a>
+                  `
+                }                
               </div>
             </div>
         `;
@@ -150,6 +157,21 @@ document.addEventListener("DOMContentLoaded", () => {
             instantFeedback.textContent = result.error;
           }
         });
+
+        const deleteTwittButton = itemTwitt.querySelector(`#deleteTwitt-${twitt.id}`);
+
+        if (deleteTwittButton) {
+          deleteTwittButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            const result = twittManager.deleteTwitt(twitt.id);
+            if (result.success) {
+              displayAllTwitts(twittManager.getTwitts());
+            } else {
+              instantFeedback.style.display = "flex";
+              instantFeedback.textContent = result.error;
+            }
+          });
+        }
       });
     }
   }
