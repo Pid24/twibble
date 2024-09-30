@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const twittData = {
       twittContent: twittContent.value,
-      twittUserOwner: usernameLoggedIn,
+      twittUsernameOwner: usernameLoggedIn,
       twittFeeling: selectedFeeling,
       twittCreatedAt: `${year}-${month}-${day}`,
     };
@@ -56,6 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       feelingItems.forEach((item) => {
         item.classList.remove("border-[#1880e8]");
       });
+
+      displayAllTwitts(twittManager.getTwitts());
     } else {
       instantFeedback.style.display = "flex";
       instantFeedback.textContent = result.error;
@@ -64,34 +66,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const existingTwitts = twittManager.getTwitts();
 
-  function displayAllTwitts() {
-    if (existingTwitts.length === 0) {
+  function displayAllTwitts(twitts = existingTwitts) {
+    if (twitts.length === 0) {
       console.log("tidak ada twitts tersedia");
     } else {
       console.log("tersedia twitts siap digunakan");
       twittsWrapper.innerHTML = "";
 
-      existingTwitts.forEach((twitt) => {
+      twitts.sort((a, b) => b.id - a.id);
+
+      twitts.forEach((twitt) => {
+        const ownerTwitt = twittUsers.find((user) => user.username.toLowerCase() === twitt.twittUsernameOwner.toLowerCase());
+
         const itemTwitt = document.createElement("div");
-        itemTwitt.classname = "p-4 border bg-primary-b-2 border-line";
-        itemTwitt.id = "twitt-${twitt.id}";
+        itemTwitt.className = "p-4 border bg-primary-b-2 border-line";
+        itemTwitt.id = `twitt-${twitt.id}`;
         itemTwitt.innerHTML = `
                     <div class="flex items-center justify-between">
               <div class="flex items-center justify-start">
-                <img src="assets/bwa-profile.png" alt="search" srcset="" class="object-cover w-[46px] h-[46px] rounded-full" />
+                <img src="${ownerTwitt.avatar}" alt="${ownerTwitt.name}" class="object-cover w-[46px] h-[46px] rounded-full" />
                 <div class="pl-2">
                   <div class="flex gap-1">
-                    <p class="inline-block text-base font-bold">Angga Risky <img src="assets/verify.png" alt="" srcset="" class="inline w-5 h-5 rounded-full" /></p>
+                    <p class="inline-block text-base font-bold">${ownerTwitt.name} <img src="assets/verify.png" alt="" class="inline w-5 h-5 rounded-full" /></p>
                   </div>
-                  <p class="text-sm text-username">@buildwithangga • 5 Mar 2024</p>
+                  <p class="text-sm text-username">@${twitt.twittUsernameOwner} • ${twitt.twittCreatedAt}</p>
                 </div>
               </div>
               <div class="flex justify-center items-center rounded-full px-3 py-1.5 border-line border-2 gap-1.5">
-                <p class="text-sm font-semibold">🤩 Happy</p>
+                <p class="text-sm font-semibold">${twitt.twittFeeling}</p>
               </div>
             </div>
 
-            <p class="pl-[55px] py-2.5 leading-7 text-base">Makan mie ayam malam ini enak sekali wuhuuuuuu</p>
+            <p class="pl-[55px] py-2.5 leading-7 text-base">
+            ${twitt.twittContent}
+            </p>
 
             <div class="flex justify-between items-center pl-[55px] w-[484px]">
               <div class="flex justify-center items-center gap-2.5 pr-[250px]">
