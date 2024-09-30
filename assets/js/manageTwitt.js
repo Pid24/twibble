@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         itemTwitt.innerHTML = `
                     <div class="flex items-center justify-between">
               <div class="flex items-center justify-start">
-                <img src="${ownerTwitt.avatar}" alt="${ownerTwitt.name}" class="object-cover w-[46px] h-[46px] rounded-full" />
+                <img id="visitProfile-${ownerTwitt.username}" src="${ownerTwitt.avatar}" alt="${ownerTwitt.name}" class="object-cover w-[46px] h-[46px] rounded-full" />
                 <div class="pl-2">
                   <div class="flex gap-1">
                     <p class="inline-block text-base font-bold">${ownerTwitt.name} <img src="assets/verify.png" alt="" class="inline w-5 h-5 rounded-full" /></p>
@@ -133,6 +133,14 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         twittsWrapper.appendChild(itemTwitt);
+
+        itemTwitt.querySelector(`#visitProfile-${ownerTwitt.username}`).addEventListener("click", function (event) {
+          event.preventDefault();
+
+          localStorage.setItem("usernameProfileChosen", `${ownerTwitt.username}`);
+          // arahkan pengguna kepada halaman lain yaitu profile
+          return (window.location.href = "../profile.html");
+        });
 
         const totalLikeThatTwitt = itemTwitt.querySelector("#totalLikeThatTwitt");
         const likeIcon = itemTwitt.querySelector(".like-icon");
