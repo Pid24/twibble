@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const getAllLoveTwitts = existingLoveTwitts.filter((loveTwitt) => loveTwitt.twittId === twitt.id);
         const countLoveTwitts = getAllLoveTwitts.length;
 
+        const hasLiked = twittManager.userHasLikedTwittValidate(twitt.id, usernameLoggedIn);
+
         const itemTwitt = document.createElement("div");
         itemTwitt.className = "p-4 border bg-primary-b-2 border-line";
         itemTwitt.id = `twitt-${twitt.id}`;
@@ -108,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="flex justify-between items-center pl-[55px] w-[484px]">
               <div class="flex justify-center items-center gap-2.5 pr-[250px]">
                 <a id="loveTwitt-${twitt.id}" href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
-                  <img class="like-icon" src="assets/heart.svg" alt="heart" />
+                  <img class="like-icon" src="assets/${hasLiked ? `heart-fill.svg` : `heart.svg`}" alt="heart" />
                   <p id="totalLikeThatTwitt" class="text-sm font-normal text-like">${countLoveTwitts} Likes</p>
                 </a>
                 <a href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
@@ -126,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         twittsWrapper.appendChild(itemTwitt);
 
         const totalLikeThatTwitt = itemTwitt.querySelector("#totalLikeThatTwitt");
+        const likeIcon = itemTwitt.querySelector(".like-icon");
 
         // bikin event listener untuk fitur like
         itemTwitt.querySelector(`#loveTwitt-${twitt.id}`).addEventListener("click", function (event) {
@@ -139,7 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
           const result = twittManager.loveTwitt(loveTwittData);
 
           if (result.success) {
-            totalLikeThatTwitt.textContent = 1 + "Likes";
+            let currentLikes = parseInt(totalLikeThatTwitt.textContent) || 0;
+            totalLikeThatTwitt.textContent = currentLikes + 1 + " Likes";
+            likeIcon.src = "assets/heart-fill.svg";
           } else {
             instantFeedback.style.display = "flex";
             instantFeedback.textContent = result.error;
