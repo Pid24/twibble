@@ -15,6 +15,22 @@ class Twitt {
     return this._twitts;
   }
 
+  userHasLikedTwittValidate(twittId, userId) {
+    // proses pemeriksaan apakah user telah memberikan like tersebut
+  }
+
+  loveTwitt(loveTwittData) {
+    const { twittId, userId } = loveTwittData;
+
+    // membuat validasi apakah user tersebut telah memberikan like pada tweet terkait
+    if (this.userHasLikedTwittValidate(twittId, userId)) {
+      return {
+        success: false,
+        error: "kamu tidak bisa memberikan like pada tweet yang sama",
+      };
+    }
+  }
+
   saveTwitt(twittData) {
     // melakukan proses validasi
     const { twittContent, twittFeeling } = twittData;

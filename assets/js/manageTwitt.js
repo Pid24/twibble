@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <div class="flex justify-between items-center pl-[55px] w-[484px]">
               <div class="flex justify-center items-center gap-2.5 pr-[250px]">
-                <a href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
+                <a id="loveTwitt-${twitt.id}" href="#" class="cursor flex justify-start items-center w-[93px] gap-1.5">
                   <img class="like-icon" src="assets/heart.svg" alt="heart" />
                   <p class="text-sm font-normal text-like">0 Likes</p>
                 </a>
@@ -120,6 +120,18 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         twittsWrapper.appendChild(itemTwitt);
+
+        // bikin event listener untuk fitur like
+        itemTwitt.querySelector(`#loveTwitt-${twitt.id}`).addEventListener("click", function (event) {
+          event.preventDefault();
+
+          const loveTwittData = {
+            twittId: twitt.id,
+            userId: usernameLoggedIn,
+          };
+
+          const result = twittManager.loveTwitt(loveTwittData);
+        });
       });
     }
   }
